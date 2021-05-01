@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Country;
 use DB;
 use App\Customer;
 use App\Invoice;
@@ -51,7 +52,14 @@ class InvoicePageController extends Controller
      */
     public function create()
     {
-        return view('invoice.create');
+        $customers = Customer::pluck('name', 'id')->prepend('Please Select','')->toArray();
+        $currencyCode = Country::pluck('currency_code', 'id')->prepend('Please Select','')->toArray();
+
+        return view('invoice.create', [
+            'customers' => $customers,
+            'currencyCode' => $currencyCode,
+            'invoiceStatus' => collect($this->invoiceStatus)->prepend('Please Select', '')->toArray()
+        ]);
     }
 
     /**
@@ -68,8 +76,12 @@ class InvoicePageController extends Controller
         if($response){
             $invoice = json_decode($response->getContent());
         }
+        
+        $currencyCode = Country::pluck('currency_code', 'id')->prepend('Please Select','')->toArray();
+
         return view('invoice.show', [
-            'invoice' => $invoice
+            'invoice' => $invoice,
+            'currencyCode' => $currencyCode,
         ]);
     }
 
@@ -88,9 +100,11 @@ class InvoicePageController extends Controller
             $invoice = json_decode($response->getContent());
         }
         $customers = Customer::pluck('name', 'id')->prepend('Please Select','')->toArray();
+        $currencyCode = Country::pluck('currency_code', 'id')->prepend('Please Select','')->toArray();
 
         return view('invoice.edit', [
             'customers' => $customers,
+            'currencyCode' => $currencyCode,
             'invoice' => $invoice,
             'invoiceStatus' => collect($this->invoiceStatus)->prepend('Please Select', '')->toArray()
         ]);
@@ -107,11 +121,13 @@ class InvoicePageController extends Controller
     {
         $input = $request->only([
             'subject',
+            'status',
             'issue_date',
             'due_date',
             'due_notes',
             'from_customer_id',
-            'to_customer_id'
+            'to_customer_id',
+            'currency'
         ]);
 
         if(!empty($input['issue_date'])) {
@@ -123,9 +139,11 @@ class InvoicePageController extends Controller
         }
 
         $invoice->subject = $input['subject'];
+        $invoice->status = $input['status'];
         $invoice->issue_date = $input['issue_date'];
         $invoice->due_date = $input['due_date'];
         $invoice->due_notes = $input['due_notes'];
+        $invoice->currency_id = $input['currency'];
         $invoice->from_customer_id = $input['from_customer_id'];
         $invoice->to_customer_id = $input['to_customer_id'];
 
@@ -140,9 +158,37 @@ class InvoicePageController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store()
+    public function store(InvoiceSaveRequest $request)
     {
-        return redirect()->route('invoice.create');
+        $input = $request->only([
+            'subject',
+            'status',
+            'due_date',
+            'issue_date',
+            'due_notes',
+            'from_customer_id',
+            'to_customer_id',
+            'currency'
+        ]);
+
+        $input['currency_id'] = $input['currency'];
+
+        if(!empty($input['issue_date'])) {
+            $input['issue_date'] = Carbon::createFromFormat('d/m/Y', $input['issue_date'])->format('Y-m-d');
+        }
+
+        if(!empty($input['due_date'])) {
+            $input['due_date'] = Carbon::createFromFormat('d/m/Y', $input['due_date'])->format('Y-m-d');
+        }
+
+        $input['subtotal'] = $input['tax'] = $input['payment'] = 0;
+        $input['created_by'] = $input['modified_by'] = 1;
+
+        $invoce = Invoice::create($input);
+
+        $message = 'Invoice ' . sprintf('%04d', $invoce->id) . ' has been created';
+
+        return redirect()->route('invoices.index')->with('message', $message);
     }
 
     /**

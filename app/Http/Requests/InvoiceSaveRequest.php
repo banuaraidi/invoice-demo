@@ -24,9 +24,10 @@ class InvoiceSaveRequest extends FormRequest
     public function rules()
     {
         return [
+            'currency' => 'required|integer',
             'subject' => 'required|string',
-            // 'due_date' => 'required|date:d/m/Y',
-            // 'issue_date' => 'required|date:d/m/Y',
+            'due_date' => 'required|date_format:d/m/Y',
+            'issue_date' => 'required|date_format:d/m/Y',
             'status' => 'required|string',
             'from_customer_id' => 'required|integer',
             'to_customer_id' => 'required|integer',

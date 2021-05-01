@@ -42,9 +42,14 @@
                     {!! Form::text('subject', $invoice->subject, ['class' => 'form-control', 'readonly' => 'readonly']) !!}
                     {!! $errors->first('subject', '<div class="error-message">:message</div>') !!}
                 </div>
-                <div class="col-sm-6">
+                <div class="col-sm-3">
                     {!! Form::label('due_notes', 'Due Notes') !!}
                     {!! Form::text('due_notes', $invoice->due_notes, ['class' => 'form-control', 'readonly' => 'readonly']) !!}
+                </div>
+                <div class="col-sm-3">
+                    {!! Form::label('currency', 'Currency') !!}
+                    {!! Form::select('currency', $currencyCode, old('currency', $invoice->currency_id), ['class' => 'form-control ' . $errors->first('currency', 'error'), 'id' => 'status', 'autocomplete' => 'off', 'readonly' => 'readonly', 'disabled' => 'disabled' ]) !!}
+                    {!! $errors->first('currency', '<div class="error-message">:message</div>') !!}
                 </div>
             </div>
             <div class="form-group row">

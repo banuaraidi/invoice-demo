@@ -13,7 +13,7 @@
         <div class="col-md-10 mx-auto">
             <div class="text-right pr-2 pb-2">
                 <button class='btn btn-outline-primary' type='submit' value='submit'>
-                    <i class='fa fa-edit'> </i> Save
+                    <i class='fa fa-edit'> </i> Update
                 </button>
             </div>
             <div class="form-group row">
@@ -33,7 +33,7 @@
                 </div>
                 <div class="col-sm-3">
                     {!! Form::label('status', 'Status') !!}
-                    {!! Form::select('status', $invoiceStatus, old('customer_from', $invoice->status), ['class' => 'form-control ' . $errors->first('status', 'error'), 'id' => 'status', 'autocomplete' => 'off' ]) !!}
+                    {!! Form::select('status', $invoiceStatus, old('status', $invoice->status), ['class' => 'form-control ' . $errors->first('status', 'error'), 'id' => 'status', 'autocomplete' => 'off' ]) !!}
                     {!! $errors->first('status', '<div class="error-message">:message</div>') !!}
                 </div>
             </div>
@@ -43,9 +43,14 @@
                     {!! Form::text('subject', $invoice->subject, ['class' => 'form-control']) !!}
                     {!! $errors->first('subject', '<div class="error-message">:message</div>') !!}
                 </div>
-                <div class="col-sm-6">
+                <div class="col-sm-3">
                     {!! Form::label('due_notes', 'Due Notes') !!}
                     {!! Form::text('due_notes', $invoice->due_notes, ['class' => 'form-control']) !!}
+                </div>
+                <div class="col-sm-3">
+                    {!! Form::label('currency', 'Currency') !!}
+                    {!! Form::select('currency', $currencyCode, old('currency', $invoice->currency_id), ['class' => 'form-control ' . $errors->first('currency', 'error'), 'id' => 'status', 'autocomplete' => 'off']) !!}
+                    {!! $errors->first('currency', '<div class="error-message">:message</div>') !!}
                 </div>
             </div>
             <div class="form-group row">

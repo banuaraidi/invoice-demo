@@ -21,64 +21,85 @@
                     {!! Form::text('invoice_id', '', ['class' => 'form-control', 'readonly' => 'readonly']) !!}
                 </div>
                 <div class="col-sm-3">
-                    {!! Form::label('subject', 'Subject') !!}
-                    {!! Form::text('subject', old('subject'), ['class' => 'form-control']) !!}
-                </div>
-                <div class="col-sm-3">
                     {!! Form::label('issue_date', 'Issue Date') !!}
-                    {!! Form::text('issue_date', old('issue_date'), ['class' => 'form-control']) !!}
+                    {!! Form::text('issue_date', old('issue_date'), ['class' => 'form-control date-param']) !!}
+                    {!! $errors->first('issue_date', '<div class="error-message">:message</div>') !!}
                 </div>
                 <div class="col-sm-3">
                     {!! Form::label('due_date', 'Due Date') !!}
                     {!! Form::text('due_date', old('due_date'), ['class' => 'form-control']) !!}
+                    {!! $errors->first('due_date', '<div class="error-message">:message</div>') !!}
+                </div>
+                <div class="col-sm-3">
+                    {!! Form::label('status', 'Status') !!}
+                    {!! Form::select('status', $invoiceStatus, old('status'), ['class' => 'form-control ' . $errors->first('status', 'error'), 'id' => 'status', 'autocomplete' => 'off' ]) !!}
+                    {!! $errors->first('status', '<div class="error-message">:message</div>') !!}
                 </div>
             </div>
             <div class="form-group row">
                 <div class="col-sm-6">
-                    {!! Form::label('fromCustomer', 'Customer (From)') !!}
-                    {!! Form::text('fromCustomer', old('fromCustomer'), ['class' => 'form-control']) !!}
+                    {!! Form::label('subject', 'Subject') !!}
+                    {!! Form::text('subject', old('subject'), ['class' => 'form-control']) !!}
+                    {!! $errors->first('subject', '<div class="error-message">:message</div>') !!}
                 </div>
-                <div class="col-sm-6">
-                    {!! Form::label('toCustomer', 'Customer (To)') !!}
-                    {!! Form::text('toCustomer', old('toCustomer'), ['class' => 'form-control']) !!}
+                <div class="col-sm-3">
+                    {!! Form::label('due_notes', 'Due Notes') !!}
+                    {!! Form::text('due_notes', old('due_notes'), ['class' => 'form-control']) !!}
+                </div>
+                <div class="col-sm-3">
+                    {!! Form::label('currency', 'Currency') !!}
+                    {!! Form::select('currency', $currencyCode, old('currency'), ['class' => 'form-control ' . $errors->first('currency', 'error'), 'id' => 'status', 'autocomplete' => 'off' ]) !!}
+                    {!! $errors->first('currency', '<div class="error-message">:message</div>') !!}
                 </div>
             </div>
             <div class="form-group row">
                 <div class="col-sm-6">
-                    <label for="addressLine1">Address (Line 1)</label>
-                    {!! Form::text('addressLine1From', old('addressLine1From'), ['class' => 'form-control']) !!}
+                    {!! Form::label('from_customer_id', 'Customer (From)') !!}
+                    {!! Form::select('from_customer_id', $customers, old('from_customer_id'), ['class' => 'form-control ' . $errors->first('from_customer_id', 'error'), 'id' => 'from_customer_id', 'autocomplete' => 'off' ]) !!}
+                    {!! $errors->first('from_customer_id', '<div class="error-message">:message</div>') !!}
                 </div>
                 <div class="col-sm-6">
-                    <label for="addressLine1">Address (Line 1)</label>
-                    {!! Form::text('addressLine1To', old('addressLine1To'), ['class' => 'form-control']) !!}
-                </div>
-            </div>
-            <div class="form-group row">
-                <div class="col-sm-3">
-                    {!! Form::label('city', 'City') !!}
-                    {!! Form::text('cityFrom', old('cityForm'), ['class' => 'form-control']) !!}
-                </div>
-                <div class="col-sm-3">
-                    {!! Form::label('addressLine2', 'Address (Line 2)') !!}
-                    {!! Form::text('addressLine2From', old('addressLine2From'), ['class' => 'form-control']) !!}
-                </div>
-                <div class="col-sm-3">
-                    {!! Form::label('city', 'City') !!}
-                    {!! Form::text('cityTo', old('cityTo'), ['class' => 'form-control']) !!}
-                </div>
-                <div class="col-sm-3">
-                    {!! Form::label('addressLine2', 'Address (Line 2)') !!}
-                    {!! Form::text('addressLine2To', old('addressLine2To'), ['class' => 'form-control']) !!}
+                    {!! Form::label('to_customer_id', 'Customer (To)') !!}
+                    {!! Form::select('to_customer_id', $customers, old('to_customer_id'), ['class' => 'form-control ' . $errors->first('to_customer_id', 'error'), 'id' => 'to_customer_id', 'autocomplete' => 'off' ]) !!}
+                    {!! $errors->first('to_customer_id', '<div class="error-message">:message</div>') !!}
                 </div>
             </div>
             <div class="form-group row">
                 <div class="col-sm-6">
-                    {!! Form::label('country', 'Country') !!}
-                    {!! Form::text('countryFrom', old('countryFrom'), ['class' => 'form-control']) !!}
+                    <label for="address_1_customer_from">Address (Line 1)</label>
+                    {!! Form::text('address_1_customer_from', '', ['class' => 'form-control', 'readonly' => 'readonly']) !!}
                 </div>
                 <div class="col-sm-6">
-                    {!! Form::label('country', 'Country') !!}
-                    {!! Form::text('countryTo', old('countryTo'), ['class' => 'form-control']) !!}
+                    <label for="address_1_customer_to">Address (Line 1)</label>
+                    {!! Form::text('address_1_customer_to', '', ['class' => 'form-control', 'readonly' => 'readonly']) !!}
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-3">
+                    {!! Form::label('city_customer_from', 'City') !!}
+                    {!! Form::text('city_customer_from', '', ['class' => 'form-control', 'readonly' => 'readonly']) !!}
+                </div>
+                <div class="col-sm-3">
+                    {!! Form::label('address_2_customer_from', 'Address (Line 2)') !!}
+                    {!! Form::text('address_2_customer_from', '', ['class' => 'form-control', 'readonly' => 'readonly']) !!}
+                </div>
+                <div class="col-sm-3">
+                    {!! Form::label('city_customer_to', 'City') !!}
+                    {!! Form::text('city_customer_to', '', ['class' => 'form-control', 'readonly' => 'readonly']) !!}
+                </div>
+                <div class="col-sm-3">
+                    {!! Form::label('address_2_customer_to', 'Address (Line 2)') !!}
+                    {!! Form::text('address_2_customer_to', '', ['class' => 'form-control', 'readonly' => 'readonly']) !!}
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-6">
+                    {!! Form::label('country_customer_from', 'Country') !!}
+                    {!! Form::text('country_customer_from', '', ['class' => 'form-control', 'readonly' => 'readonly']) !!}
+                </div>
+                <div class="col-sm-6">
+                    {!! Form::label('country_customer_to', 'Country') !!}
+                    {!! Form::text('country_customer_to', '', ['class' => 'form-control', 'readonly' => 'readonly']) !!}
                 </div>
             </div>
         </div>
@@ -86,4 +107,27 @@
     {!! Form::close() !!}
 </div>
 
+@endsection
+
+@section('script')
+    <script>
+        $(document).ready(function () {
+            $('select[name=from_customer_id]').change(function(){
+                $.get('/api/customer/' + $(this).val(), function( data ) {
+                    $('input[name=address_1_customer_from]').val(data.address_1)
+                    $('input[name=address_2_customer_from]').val(data.address_2)
+                    $('input[name=city_customer_from]').val(data.city)
+                    $('input[name=country_customer_from]').val(data.country)
+                })
+            });
+            $('select[name=to_customer_id]').change(function(){
+                $.get('/api/customer/' + $(this).val(), function( data ) {
+                    $('input[name=address_1_customer_to]').val(data.address_1)
+                    $('input[name=address_2_customer_to]').val(data.address_2)
+                    $('input[name=city_customer_to]').val(data.city)
+                    $('input[name=country_customer_to]').val(data.country)
+                });
+            });
+        })
+    </script>
 @endsection

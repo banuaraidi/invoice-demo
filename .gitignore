@@ -1,6 +1,13 @@
 /node_modules
-/public
-/storage
+/public/hot
+/public/storage
+/public/css/
+/public/fonts/
+/public/js/
+/public/mix-manifest.json
+/public/webfonts/
+/storage/*.key
+/storage/logs/*
 /vendor
 /.idea
 /.vagrant
